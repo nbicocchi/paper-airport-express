@@ -1,0 +1,32 @@
+# Python environments and caches
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Local analysis outputs (published CSV and CSV.gz results remain tracked)
+/code/data/
+/code/results/models/
+/code/results/revision/predictions.csv
+/code/results/revision/quantile_predictions.csv
+/code/results/revision/recent_audit.csv
+/code/report.md
+/code/figures/
+
+# Manuscript material belongs only in the private text repository
+/paper/
+/submission/
+
+# Local settings and credentials
+.env
+.env.*
+!.env.example
+.idea/
+.vscode/
+.DS_Store
+*~

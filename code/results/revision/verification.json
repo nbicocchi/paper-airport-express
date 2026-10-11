@@ -1,0 +1,7 @@
+{
+  "prediction_rows": 40964,
+  "models": 11,
+  "folds": 4,
+  "paired_gain_rows": 96,
+  "checks": "metrics, identical evaluation hours, recent-data cutoffs, inner validation ordering, quantile coverage"
+}

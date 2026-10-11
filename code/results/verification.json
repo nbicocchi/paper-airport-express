@@ -1,0 +1,7 @@
+{
+  "source_shuttle_total_reconciled": 1386824.0,
+  "evaluated_prediction_rows": 22344,
+  "inference_predictions_checked": 1176,
+  "max_inference_difference": 5.684341886080802e-14,
+  "chronology_and_metrics": "passed"
+}

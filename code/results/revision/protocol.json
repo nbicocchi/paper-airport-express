@@ -1,0 +1,20 @@
+{
+  "issue": "00:00 local civil time on target day",
+  "horizons_hours": [
+    5,
+    23
+  ],
+  "monthly_fit": "First day 00:00; all fitting inputs strictly earlier",
+  "passenger_estimates": "Frozen monthly",
+  "recent_window_days": 28,
+  "recent_update": "Daily; recorded targets strictly before issue; frozen MEAN fallback",
+  "schedule_status": "Retrospective movement selection; cancellation completeness unknown",
+  "bootstrap": {
+    "replicates": 1000,
+    "unit": "day",
+    "seed": 42,
+    "directional_seed": 43,
+    "between_day_dependence": "not modeled"
+  },
+  "ablation": "same 24 features; no low-cost/domestic terms"
+}
