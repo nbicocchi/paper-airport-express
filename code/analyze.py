@@ -325,7 +325,7 @@ Il contributo dei voli va letto confrontando ogni modello con entrambi i riferim
 
 ## 2. Fonti, unità e copertura
 
-Fonte unica: [repository nbicocchi/paper-airport-express](https://github.com/nbicocchi/paper-airport-express), versione fissata dal commit `{json.loads((ROOT/'source_manifest.json').read_text())['sha']}`. Il file `source_manifest.json` riporta percorso, dimensione e SHA Git di ciascun file. Lo scaricamento verifica lo SHA, quindi il codice non dipende da modifiche successive del branch.
+Fonte unica: [dataset nbicocchi/paper-airport-express-code](https://github.com/nbicocchi/paper-airport-express-code). Il file `source_manifest.json` riporta percorso, dimensione e SHA Git di ciascun file e conserva il commit originale di provenienza `{json.loads((ROOT/'source_manifest.json').read_text())['sha']}`. Lo scaricamento verifica lo SHA, quindi il codice non dipende da modifiche successive del branch.
 
 Sono letti tutti i **3 file aerei** e tutti i **29 file navetta** presenti in questa versione. Nessuna fonte esterna, nessun dato meteorologico o di servizio aggiunto.
 
