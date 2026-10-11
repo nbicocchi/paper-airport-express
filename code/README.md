@@ -38,7 +38,7 @@ The editorial scripts in this directory generate manuscript figures and tables f
 
 You can also invoke each script as `python code/<script>.py` from repository root or by absolute path from another working directory. Paths are resolved by `data_sources.py`; no copy into `code/data/` is needed. Results and model storage remain under `code/results/`.
 
-## Targeted major revision
+## Extended experiments
 
 `revision.py` consumes the original results and verifies/reloads the pinned Excel inputs. It reproduces PAX exactly, then adds matched 24-feature REAL-LOAD, REAL-TIME and REAL-BOTH ablations; a ridge calendar interaction model selected on three expanding pre-test splits; a 28-day daily RECENT baseline with frozen fallback; and a fixed 0.90 quantile model. All four original monthly holdouts are retained. Results are written separately to `results/revision/`.
 
@@ -52,7 +52,8 @@ Row-level revision artifacts are committed as deterministic gzip-compressed CSVs
 
 ## Journal publication workflow
 
-All editorial Python scripts live in this directory. From this repository's root, run:
+To generate manuscript figures and tables, clone `paper-airport-express-text`
+alongside this repository. From this repository's root, run:
 
 ```bash
 python code/make_paper_figures.py
@@ -62,4 +63,4 @@ python code/make_journal_tables.py
 make -C ../paper-airport-express-text/paper
 ```
 
-By default the private `paper-airport-express-text` repository is a sibling of this clone. Set `AIRPORT_EXPRESS_TEXT_REPO` to its path for another layout. `verify_paper.py` and `package_submission.py` also operate on that private repository, but require currently missing journal assets documented in its README. The experimental CSVs and original 32 Excel workbooks remain here, unchanged; reproducing the experiments requires no private files.
+Set `AIRPORT_EXPRESS_TEXT_REPO` to the manuscript repository's path for another layout. `verify_paper.py` and `package_submission.py` check journal requirements and create a draft archive; their additional required assets are documented in the manuscript README. Reproducing the experiments does not require access to the manuscript repository.
