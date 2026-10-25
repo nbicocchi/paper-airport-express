@@ -48,11 +48,11 @@ Intervals are paired whole-day percentile bootstrap summaries, not multiplicity-
 \end{abstract}
 \end{frontmatter}
 \section{Complete accuracy panels}
-Counts are recorded trips per hour. Main comparisons use identical target hours within each month and direction.
-REAL models are matched-feature post-hoc substitutions. ACTUAL-EXTRA is an archived exploratory model and is excluded from these panels.
+Counts are recorded trips per hour. All fitted models use observations before March 2025 and remain fixed throughout March--May. Main comparisons use identical target hours within each period and direction.
+CAL, SCHED and PAX are the main models; MEAN and RECENT are secondary references. REAL labels identify matched-feature post-hoc substitutions in the machine-readable results.
 ''']
-    models=['MEAN','CAL','CAL-REG','RECENT','SCHED','PAX','RIDGE','REAL-LOAD','REAL-TIME','REAL-BOTH']
-    for fold in ['2024-09','2025-03','2025-04','2025-05']:
+    models=['CAL','SCHED','PAX','MEAN','RECENT','REAL-LOAD','REAL-TIME','REAL-BOTH']
+    for fold in ['ALL','2025-03','2025-04','2025-05']:
         f=metrics[(metrics.fold==fold)&metrics.model.isin(models)].copy()
         f['model']=pd.Categorical(f.model,models,ordered=True)
         f=f.sort_values(['type','model'])
@@ -62,13 +62,13 @@ REAL models are matched-feature post-hoc substitutions. ACTUAL-EXTRA is an archi
         parts.append(B+'clearpage\n')
     parts.append(r'\section{Incremental gains and directional differences}'+'\n')
     labels={'type':'Dir.','fold':'Month','reference':'Reference','gain_pct':'Gain','low':r'95\% lower','high':r'95\% upper','model':'Model','difference_pp':r'$\Delta$ (pp)','common_hours':'Hours'}
-    f=gains[(gains.model=='PAX')&gains.reference.isin(['CAL','MEAN','SCHED'])]
+    f=gains[(gains.model=='PAX')&gains.reference.isin(['CAL','SCHED'])]
     parts.append(latex_table(f,['fold','type','reference','gain_pct','low','high'],
-        'PAX relative MAE gains against the original references, all months (percent). Positive favors PAX.',labels))
+        'PAX relative MAE gains in the main comparison (percent). ALL denotes the complete holdout; positive favors PAX.',labels))
     parts.append(B+'clearpage\n')
-    f=gains[(gains.model=='PAX')&gains.reference.isin(['CAL-REG','RECENT'])]
+    f=gains[(gains.model=='PAX')&gains.reference.isin(['MEAN','RECENT'])]
     parts.append(latex_table(f,['fold','type','reference','gain_pct','low','high'],
-        'PAX relative MAE gains against stronger calendar and recent-history references (percent). RECENT has daily target-history updates.',labels))
+        'Secondary PAX gains against historical shuttle averages (percent). RECENT has daily target-history updates.',labels))
     f=pd.read_csv(R/'directional_gains.csv')
     parts.append(latex_table(f,['fold','reference','difference_pp','low','high','common_hours'],
         'PAX gain toward the station minus its gain toward the airport, on common hours with the same day draws. Units are percentage points.',labels))
@@ -79,9 +79,9 @@ REAL models are matched-feature post-hoc substitutions. ACTUAL-EXTRA is an archi
     parts.append(B+'clearpage\n')
     parts.append(r'\section{Load fallback and peak diagnostics}'+'\n')
     f=pd.read_csv(R/'passenger_fallback.csv')
-    parts.append(latex_table(f,['fold','bound','level','n','total','pct'],
-        'Historical load-estimation fallback on recorded scheduled test-month movements, with three preceding and four following boundary hours. Counts are flights; A/D are arrivals/departures.',
-        {'fold':'Month','bound':'Bound','level':'Pooling','n':'Flights','total':'Total','pct':'Percent'}))
+    parts.append(latex_table(f,['fold','level','n','total','pct'],
+        'Historical load-estimation fallback on recorded scheduled test-period movements, including boundary windows. Passenger averages always use the pre-March cutoff. Counts are flights.',
+        {'fold':'Period','level':'Pooling','n':'Flights','total':'Total','pct':'Percent'}))
     f=pd.read_csv(R/'peak_diagnostics.csv');f=f[f.model=='PAX']
     f['direction_month']=f.type.map({'DA APT':'A-S','DA FS':'S-A'})+' '+f.fold
     parts.append(latex_table(f,['direction_month','peak_n','peak_bias','peak_MAE','under_pct','error_p10','error_p50','error_p90'],
@@ -98,16 +98,14 @@ REAL models are matched-feature post-hoc substitutions. ACTUAL-EXTRA is an archi
     parts.append(latex_table(f,['fold','type','n','q90_coverage','q90_pinball','point_pinball','peak_coverage'],
         'Upper-quantile coverage (percent) and pinball loss at 0.90. Realized-peak coverage is descriptive and is not the nominal unconditional calibration target.',
         {'fold':'Month','type':'Dir.','n':'N','q90_coverage':'Coverage','q90_pinball':'Q90 loss','point_pinball':'Point loss','peak_coverage':'Peak cover.'}))
-    audit=read_result('recent_audit.csv',parse_dates=['time','issue_time','latest_source_time'])
+    audit=read_result('recent_audit.csv',parse_dates=['time','target_day','latest_source_time'])
     recent=audit.groupby(['fold','type']).agg(n=('time','size'),fallback_pct=('fallback',lambda x:100*x.mean()),mean_recent_n=('recent_n','mean')).reset_index()
-    cv=pd.read_csv(R/'calendar_cv.csv').sort_values('inner_MAE').groupby(['fold','type']).first().reset_index()
-    f=recent.merge(cv[['fold','type','alpha']],on=['fold','type'])
-    parts.append(latex_table(f,['fold','type','n','fallback_pct','mean_recent_n','alpha'],
-        'RECENT fallback rate and mean same-hour/weekday observations in its preceding 28-day window; final column gives CAL-REG penalty chosen strictly within pre-month data.',
-        {'fold':'Month','type':'Dir.','n':'N','fallback_pct':r'Fallback (\%)','mean_recent_n':'Recent N','alpha':r'$\alpha$'}))
+    parts.append(latex_table(recent,['fold','type','n','fallback_pct','mean_recent_n'],
+        'RECENT fallback rate and mean same-hour/weekday observations in its preceding 28-day window. Fallback uses the fixed training-set mean.',
+        {'fold':'Month','type':'Dir.','n':'N','fallback_pct':r'Fallback (\%)','mean_recent_n':'Recent N'}))
     parts.append(r'''\section{Machine-readable reproducibility records}
-The repository includes the per-hour point and quantile predictions, recent-history source-time audit, inner calendar validation scores and protocol metadata.
-Point-model metrics, peak counts, gains and quantile coverage are recomputed by \texttt{verify\_revision.py}; the original predictions remain separately archived.
+The repository includes per-hour point and quantile predictions, recent-history source-time audits, fixed-fit audits and protocol metadata.
+Point-model metrics, peak counts, gains and quantile coverage are checked by \texttt{verify\_revision.py}.
 No test target is zero-filled in the main benchmark. The separate zero-fill scenario is a sensitivity assumption and is not certified ground truth.
 \end{document}
 ''')

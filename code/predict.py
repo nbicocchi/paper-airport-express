@@ -1,5 +1,5 @@
-"""Example inference from a scheduled-flight CSV, using the May 2025 test models.
-These models are frozen through April 2025, not a production forecast service.
+"""Example inference from a scheduled-flight CSV, using pre-March 2025 models.
+These models are fixed throughout March--May, not a production forecast service.
 """
 from pathlib import Path
 import argparse, json, os
