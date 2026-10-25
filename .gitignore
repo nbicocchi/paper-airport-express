@@ -1,0 +1,49 @@
+# Escludi tutto salvo il codice e i file necessari al paper.
+*
+!/.gitignore
+
+# Codice Python e dipendenze/metadati necessari al download dei dati.
+!/code/
+!/code/**/
+!/code/**/*.py
+!/code/requirements.txt
+!/code/source_manifest.json
+
+# Sorgenti del paper, bibliografia, template e figure (PDF incluso).
+!/paper/
+!/paper/**/
+!/paper/**/*.tex
+!/paper/**/*.bib
+!/paper/**/*.cls
+!/paper/**/*.bst
+!/paper/**/*.sty
+!/paper/**/*.pdf
+!/paper/**/*.png
+!/paper/**/*.jpg
+!/paper/**/*.jpeg
+!/paper/**/*.eps
+!/paper/**/*.svg
+!/paper/Makefile
+!/paper/ELSARTICLE-LICENSE
+
+# Non includere mai dati, risultati intermedi, ambienti o cache.
+dataset/
+datasets/
+data/
+results/
+intermediate/
+tmp/
+temp/
+build/
+dist/
+venv/
+.venv/
+env/
+.env/
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+*.egg-info/
+*.md

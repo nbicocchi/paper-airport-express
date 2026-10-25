@@ -1,0 +1,264 @@
+{
+  "sha": "75579bc96227e6dc4c40675a9d432d0e59e8b588",
+  "url": "https://api.github.com/repos/nbicocchi/paper-airport-express/git/trees/75579bc96227e6dc4c40675a9d432d0e59e8b588",
+  "tree": [
+    {
+      "path": "dataset/Aeroporto/2023 BLQ.xlsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "685c6b11be4ac61b2034d37fbf12f1f5fc16aad4",
+      "size": 4218635,
+      "url": "https://api.github.com/repos/nbicocchi/paper-airport-express/git/blobs/685c6b11be4ac61b2034d37fbf12f1f5fc16aad4"
+    },
+    {
+      "path": "dataset/Aeroporto/2024 BLQ.xlsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c6fa508a4320b8a3773112ababe1e7cb23405aef",
+      "size": 4430132,
+      "url": "https://api.github.com/repos/nbicocchi/paper-airport-express/git/blobs/c6fa508a4320b8a3773112ababe1e7cb23405aef"
+    },
+    {
+      "path": "dataset/Aeroporto/2025 BLQ.xlsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b9987dedb4acc0280eb9b7d6f72e5e56401c9785",
+      "size": 2315515,
+      "url": "https://api.github.com/repos/nbicocchi/paper-airport-express/git/blobs/b9987dedb4acc0280eb9b7d6f72e5e56401c9785"
+    },
+    {
+      "path": "dataset/Marconi Express/DA APT 0324.xlsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "43de74304eb9cde845d28f177bc02ad91b4bcbaa",
+      "size": 25127,
+      "url": "https://api.github.com/repos/nbicocchi/paper-airport-express/git/blobs/43de74304eb9cde845d28f177bc02ad91b4bcbaa"
+    },
+    {
+      "path": "dataset/Marconi Express/DA APT 0325.xlsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2163b622f071d95479ea528a42292b255d5e0c81",
+      "size": 21274,
+      "url": "https://api.github.com/repos/nbicocchi/paper-airport-express/git/blobs/2163b622f071d95479ea528a42292b255d5e0c81"
+    },
+    {
+      "path": "dataset/Marconi Express/DA APT 0424.xlsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7453173ce07e225ccb0646bc5f27e75634a3aa46",
+      "size": 22920,
+      "url": "https://api.github.com/repos/nbicocchi/paper-airport-express/git/blobs/7453173ce07e225ccb0646bc5f27e75634a3aa46"
+    },
+    {
+      "path": "dataset/Marconi Express/DA APT 0425.xlsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d5e7f4abc718296f84b3f8d87537d4f50112d009",
+      "size": 24596,
+      "url": "https://api.github.com/repos/nbicocchi/paper-airport-express/git/blobs/d5e7f4abc718296f84b3f8d87537d4f50112d009"
+    },
+    {
+      "path": "dataset/Marconi Express/DA APT 0524.xlsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "880d972d7a51e4aa60f0027257442bd82898d0cd",
+      "size": 27100,
+      "url": "https://api.github.com/repos/nbicocchi/paper-airport-express/git/blobs/880d972d7a51e4aa60f0027257442bd82898d0cd"
+    },
+    {
+      "path": "dataset/Marconi Express/DA APT 0525.xlsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6e0eddedd6c5868959334269f59860ae304bcc83",
+      "size": 27390,
+      "url": "https://api.github.com/repos/nbicocchi/paper-airport-express/git/blobs/6e0eddedd6c5868959334269f59860ae304bcc83"
+    },
+    {
+      "path": "dataset/Marconi Express/DA APT 0824.xlsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f6ea81dd5b2af0c58c625def8e08606114a75941",
+      "size": 19560,
+      "url": "https://api.github.com/repos/nbicocchi/paper-airport-express/git/blobs/f6ea81dd5b2af0c58c625def8e08606114a75941"
+    },
+    {
+      "path": "dataset/Marconi Express/DA APT 0825.xlsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e3965c93debb3a105529991d8eaf810f3568ccf9",
+      "size": 19486,
+      "url": "https://api.github.com/repos/nbicocchi/paper-airport-express/git/blobs/e3965c93debb3a105529991d8eaf810f3568ccf9"
+    },
+    {
+      "path": "dataset/Marconi Express/DA APT 0924.xlsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6c9a42ecc6f1559e1d4afbcbf6f5bcf547114f1f",
+      "size": 15644,
+      "url": "https://api.github.com/repos/nbicocchi/paper-airport-express/git/blobs/6c9a42ecc6f1559e1d4afbcbf6f5bcf547114f1f"
+    },
+    {
+      "path": "dataset/Marconi Express/DA APT 0925.xlsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1c559069a60446a8c7edcaca5df7b98d24437239",
+      "size": 18635,
+      "url": "https://api.github.com/repos/nbicocchi/paper-airport-express/git/blobs/1c559069a60446a8c7edcaca5df7b98d24437239"
+    },
+    {
+      "path": "dataset/Marconi Express/DA APT 1025.xlsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5331a89d60f90f2d3de7ac57bf3c3331d2649859",
+      "size": 23842,
+      "url": "https://api.github.com/repos/nbicocchi/paper-airport-express/git/blobs/5331a89d60f90f2d3de7ac57bf3c3331d2649859"
+    },
+    {
+      "path": "dataset/Marconi Express/DA FS 0324.xlsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d4a1ecc3ece3db088150bc539df734ac959c849c",
+      "size": 25102,
+      "url": "https://api.github.com/repos/nbicocchi/paper-airport-express/git/blobs/d4a1ecc3ece3db088150bc539df734ac959c849c"
+    },
+    {
+      "path": "dataset/Marconi Express/DA FS 0325.xlsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fcd5a79dd859073b647f082f58792d2e9ffef335",
+      "size": 21028,
+      "url": "https://api.github.com/repos/nbicocchi/paper-airport-express/git/blobs/fcd5a79dd859073b647f082f58792d2e9ffef335"
+    },
+    {
+      "path": "dataset/Marconi Express/DA FS 0424.xlsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7a660bfaa03172119cc21d29e398f0263b30f1ee",
+      "size": 22923,
+      "url": "https://api.github.com/repos/nbicocchi/paper-airport-express/git/blobs/7a660bfaa03172119cc21d29e398f0263b30f1ee"
+    },
+    {
+      "path": "dataset/Marconi Express/DA FS 0425.xlsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8a6c90d0481bd76604658cd84184629fc0f9c6c4",
+      "size": 26666,
+      "url": "https://api.github.com/repos/nbicocchi/paper-airport-express/git/blobs/8a6c90d0481bd76604658cd84184629fc0f9c6c4"
+    },
+    {
+      "path": "dataset/Marconi Express/DA FS 0524.xlsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4420d109a0a846c15cc56477d1a7bbff5914656e",
+      "size": 27010,
+      "url": "https://api.github.com/repos/nbicocchi/paper-airport-express/git/blobs/4420d109a0a846c15cc56477d1a7bbff5914656e"
+    },
+    {
+      "path": "dataset/Marconi Express/DA FS 0525.xlsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fba274f93980b3f9cb1bf293a4f6306ff0f0e585",
+      "size": 27426,
+      "url": "https://api.github.com/repos/nbicocchi/paper-airport-express/git/blobs/fba274f93980b3f9cb1bf293a4f6306ff0f0e585"
+    },
+    {
+      "path": "dataset/Marconi Express/DA FS 0824.xlsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7abd20d5c590b98965aa0f7c629d94249b858681",
+      "size": 19534,
+      "url": "https://api.github.com/repos/nbicocchi/paper-airport-express/git/blobs/7abd20d5c590b98965aa0f7c629d94249b858681"
+    },
+    {
+      "path": "dataset/Marconi Express/DA FS 0924.xlsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a8d1a9bf4af11413c6646965ab9fcc148467df8f",
+      "size": 15652,
+      "url": "https://api.github.com/repos/nbicocchi/paper-airport-express/git/blobs/a8d1a9bf4af11413c6646965ab9fcc148467df8f"
+    },
+    {
+      "path": "dataset/Marconi Express/DA FS 0925.xlsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "206070c4e522b2b781d96b57c93605cb9590deec",
+      "size": 18604,
+      "url": "https://api.github.com/repos/nbicocchi/paper-airport-express/git/blobs/206070c4e522b2b781d96b57c93605cb9590deec"
+    },
+    {
+      "path": "dataset/Marconi Express/DA FS 1025.xlsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f69a013024e1f101a71bafbfca055a2d42b3bf28",
+      "size": 23707,
+      "url": "https://api.github.com/repos/nbicocchi/paper-airport-express/git/blobs/f69a013024e1f101a71bafbfca055a2d42b3bf28"
+    },
+    {
+      "path": "dataset/Marconi Express/SS 0324.xlsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "dd6d514f1f699c2952d5335867654b3588bfe930",
+      "size": 26941,
+      "url": "https://api.github.com/repos/nbicocchi/paper-airport-express/git/blobs/dd6d514f1f699c2952d5335867654b3588bfe930"
+    },
+    {
+      "path": "dataset/Marconi Express/SS 0424.xlsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5d6f514432d9a053bff22320042d3cb9ce548d28",
+      "size": 28109,
+      "url": "https://api.github.com/repos/nbicocchi/paper-airport-express/git/blobs/5d6f514432d9a053bff22320042d3cb9ce548d28"
+    },
+    {
+      "path": "dataset/Marconi Express/SS 0524.xlsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "cade049dbeda435968c4d0cb23e9fcef41e7914e",
+      "size": 27410,
+      "url": "https://api.github.com/repos/nbicocchi/paper-airport-express/git/blobs/cade049dbeda435968c4d0cb23e9fcef41e7914e"
+    },
+    {
+      "path": "dataset/Marconi Express/SS 0824.xlsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7e5022ee5b4e8429f519b59ea3c6cc068cf195ed",
+      "size": 21601,
+      "url": "https://api.github.com/repos/nbicocchi/paper-airport-express/git/blobs/7e5022ee5b4e8429f519b59ea3c6cc068cf195ed"
+    },
+    {
+      "path": "dataset/Marconi Express/SS 0825.xlsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d94f9e014f88ba25f5481b78c05d6cc51e3659ce",
+      "size": 17812,
+      "url": "https://api.github.com/repos/nbicocchi/paper-airport-express/git/blobs/d94f9e014f88ba25f5481b78c05d6cc51e3659ce"
+    },
+    {
+      "path": "dataset/Marconi Express/SS 0924.xlsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c2667186f7bcc67790f19108aeb89dd85e4ec343",
+      "size": 21019,
+      "url": "https://api.github.com/repos/nbicocchi/paper-airport-express/git/blobs/c2667186f7bcc67790f19108aeb89dd85e4ec343"
+    },
+    {
+      "path": "dataset/Marconi Express/SS 0925.xlsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c387eb5f4c7f108c22fe95c298a7f788ac682718",
+      "size": 18204,
+      "url": "https://api.github.com/repos/nbicocchi/paper-airport-express/git/blobs/c387eb5f4c7f108c22fe95c298a7f788ac682718"
+    },
+    {
+      "path": "dataset/Marconi Express/SS 1025.xlsx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "35c0e80dc2acc7d4242d6dc1fcbb5dafcb3925a7",
+      "size": 26196,
+      "url": "https://api.github.com/repos/nbicocchi/paper-airport-express/git/blobs/35c0e80dc2acc7d4242d6dc1fcbb5dafcb3925a7"
+    }
+  ],
+  "truncated": false,
+  "original_data_commit": "9911fdb119eb7a955fd90e47c03f64d11594af67"
+}
