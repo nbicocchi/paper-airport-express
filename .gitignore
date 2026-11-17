@@ -47,3 +47,7 @@ __pycache__/
 .ipynb_checkpoints/
 *.egg-info/
 *.md
+
+# Presentazione Markdown.
+!/slides/
+!/slides/slides.md
