@@ -4,8 +4,8 @@ lang: it
 theme: default
 paginate: true
 size: 16:9
-title: Gli orari dei voli aiutano a prevedere l’uso del Marconi Express?
-description: Il lavoro e i risultati principali spiegati in 8 slide
+title: Il valore degli orari dei voli per prevedere la domanda oraria del Marconi Express
+description: Il lavoro e i risultati principali spiegati in 9 slide
 style: |
   section { font-size: 26px; }
   h1 { font-size: 38px; }
@@ -14,18 +14,20 @@ style: |
   blockquote { font-size: 27px; }
 ---
 
-# 1. Gli orari dei voli aiutano a prevedere l’uso del Marconi Express?
+# 1. Il valore degli orari dei voli per prevedere la domanda oraria del Marconi Express
 
-### Il collegamento tra aeroporto e stazione di Bologna
+**Nicola Bicocchi e Marco Mamei**
 
-- **Obiettivo:** prevedere quanti viaggi saranno effettuati ogni ora, nelle due direzioni.
-- **Domanda:** conoscere i voli serve davvero, oltre a sapere l’ora e il giorno della settimana?
-- **Seconda domanda:** serve anche stimare quanti passeggeri trasporta ogni volo?
+Università degli Studi di Modena e Reggio Emilia
 
-> Risposta in breve: contare i voli aiuta; stimarne i passeggeri aggiunge poco, in questo studio.
+Prevediamo i viaggi orari tra l’aeroporto e la stazione di Bologna, in entrambe le direzioni.
+
+- Quanto migliora la previsione aggiungendo al calendario il numero di voli programmati?
+- Quanto si guadagna stimando anche i passeggeri di ciascun volo?
 
 ![](../paper/figures/week.png)
 
+<!-- Nicola Bicocchi afferisce al Dipartimento di Ingegneria «Enzo Ferrari». Marco Mamei afferisce al Dipartimento di Scienze e Metodi dell’Ingegneria. -->
 
 ---
 
@@ -54,25 +56,22 @@ style: |
 
 ---
 
-# 4. Un confronto semplice e controllato
+# 4. Come misuriamo il valore dei dati sui voli
 
 | Modello | Informazioni utilizzate |
 | :--- | :--- |
-| **CAL** | Calendario: ora, giorno della settimana, mese… |
-| **SCHED** | Calendario + numero di voli programmati nelle ore vicine |
-| **PAX** | Come SCHED + passeggeri stimati dalle medie dei voli passati |
+| **CAL** | Ora, giorno della settimana, mese e altri effetti di calendario |
+| **SCHED** | CAL + numero di voli programmati nelle ore vicine |
+| **PAX** | SCHED + passeggeri stimati dai conteggi di voli precedenti |
 
-- **Stesso metodo di previsione**, stessi dati di addestramento: cambia l’informazione aggiunta.
-- Si impara dai dati precedenti a marzo 2025 e si verifica su **marzo–maggio 2025**, senza aggiornare i tre modelli.
-- Il test comprende circa **1.490 ore per direzione**.
+- **Addestramento** sui conteggi della navetta di marzo, aprile, maggio, agosto e settembre 2024. Per stimare i passeggeri si usano i dati dei voli fino a febbraio 2025.
+- **Test** da marzo a maggio 2025, su circa 1.490 ore registrate per direzione. I tre modelli usano lo stesso algoritmo e restano fissi durante il test.
 
-> Così si verifica se i dati sui voli aggiungono qualcosa al calendario.
-
-<!-- Il metodo è gradient boosting. Le stime dei passeggeri non sono prenotazioni: sono medie storiche, calcolate prima del test e poi mantenute fisse. L’ultima storia disponibile della navetta per l’addestramento risale a settembre 2024. -->
+<!-- Il modello principale usa il gradient boosting. -->
 
 ---
 
-# 5. Il risultato principale: basta già contare i voli
+# 5. Contare i voli dà quasi tutto il guadagno sul calendario
 
 **Errore assoluto medio: di quanti viaggi si sbaglia, in media, ogni ora.**
 Più basso è il valore, meglio è.
@@ -83,9 +82,8 @@ Più basso è il valore, meglio è.
 | SCHED: + voli | **31,02** | **24,97** |
 | PAX: + passeggeri stimati | 30,86 | 24,85 |
 
-- Aggiungere i voli riduce l’errore del **8,7%** verso la stazione e del **3,7%** verso l’aeroporto.
-- Stimare anche i passeggeri aggiunge solo **circa lo 0,5%** di miglioramento in ciascuna direzione.
-- Quest’ultimo piccolo vantaggio **non è statisticamente chiaro**: è compatibile anche con nessun beneficio.
+- Aggiungere i voli riduce l’errore dell’**8,7%** verso la stazione e del **3,7%** verso l’aeroporto.
+- Con le stime dei passeggeri, l’errore scende di un altro **0,5% circa** in ciascuna direzione. I dati sono compatibili con piccoli guadagni e piccoli peggioramenti.
 
 <!-- Risultati aggregati di marzo–maggio, in viaggi/ora. Intervalli al 95% del guadagno SCHED su CAL: [4,1%; 12,6%] e [-0,2%; 7,4%]. Quindi anche il beneficio dei soli voli verso l’aeroporto è meno certo. Intervalli del guadagno PAX su SCHED: [-1,3%; 2,3%] e [-1,3%; 2,2%]. -->
 
@@ -100,30 +98,42 @@ Più basso è il valore, meglio è.
 - Verso l’aeroporto, i miglioramenti sono più piccoli e meno certi.
 - A maggio, una semplice media dei **conteggi recenti della navetta** batte PAX in entrambe le direzioni.
 
-<!-- RECENT usa i 28 giorni precedenti e può ricevere conteggi dei giorni già conclusi durante il test; CAL, SCHED e PAX restano fissi. Non è quindi un confronto che isola il valore dei voli. A maggio, MAE RECENT 29,69 e 22,46; PAX 31,12 e 27,68. Tre mesi non bastano per generalizzare a tutte le stagioni. -->
+<!-- RECENT usa i 28 giorni precedenti e può ricevere conteggi dei giorni già conclusi durante il test; CAL, SCHED e PAX restano fissi. Non è quindi un confronto che isola il valore dei voli. A maggio, MAE RECENT 29,69 e 22,46; PAX 31,12 e 27,68. A marzo RECENT trova almeno un conteggio recente corrispondente per circa il 62% delle ore valutate. Ad aprile e maggio lo trova per tutte le ore. -->
 
 ---
 
-# 7. Il punto debole: le ore davvero affollate
+# 7. I picchi restano difficili da prevedere
 
-- Nelle ore di picco osservate, l’errore di PAX sale a circa **60 viaggi/ora verso la stazione** e **49 verso l’aeroporto**: quasi il doppio della media.
-- In queste ore, la previsione è troppo bassa nel **96%** e nel **92%** dei casi.
-- Ma nelle ore che il modello *prevede* più affollate, può anche sovrastimare: **picchi osservati e picchi previsti non coincidono**.
+- Nelle ore di punta verso la stazione, aggiungere i voli porta l’errore medio da **77 a 62 viaggi all’ora**.
+- Nelle ore di punta osservate, PAX sottostima i viaggi nel **96%** dei casi verso la stazione e nel **92%** verso l’aeroporto.
 
-![h:265](../paper/figures/calibration_peaks.png)
+![h:245](../paper/figures/calibration_peaks.png)
 
-<!-- Figura: in alto si confrontano medie previste e osservate raggruppando per livello della previsione; in basso gli errori nelle ore con picchi osservati. Un errore negativo indica sottostima. Soglie dei picchi fissate sui dati di addestramento: 246 e 219 viaggi/ora. Selezionare a posteriori le osservazioni più alte seleziona anche sorprese verso l’alto: non dimostra una sottostima generale del modello. Esempio dell’andamento orario, 1–7 maggio: paper/figures/week.png. -->
+<!-- In alto la figura raggruppa le ore per livello di domanda previsto. In basso mostra gli errori nelle ore in cui la domanda osservata era più alta. Un errore negativo indica sottostima. -->
 
 ---
 
-# 8. Cosa ci portiamo a casa?
+# 8. Durante gli eventi, voli e navetta possono divergere
 
-1. **Partire dal numero di voli:** produce quasi tutto il miglioramento rispetto al solo calendario.
-2. **Non dare per scontato il valore di dati più complessi:** le stime storiche dei passeggeri aggiungono poco.
-3. **Controllare separatamente direzioni, mesi e picchi:** un buon errore medio non basta.
+| Momento | Passeggeri aerei | Viaggi in navetta |
+| :--- | ---: | ---: |
+| Vigilia della Fiera del Libro per Ragazzi (2025) | +19,8% in arrivo | +42,5% verso la stazione |
+| Vigilia di Cosmoprof (2025) | +15,7% in arrivo | −23,7% verso la stazione |
+| Giorno dopo il GP di Imola (2025) | +7,7% in partenza | +29,1% verso l’aeroporto |
 
-**Limiti:** test retrospettivo di tre mesi, solo ore registrate di servizio ordinario; manca la verifica di quali dati sui voli fossero realmente disponibili in anticipo.
+*Variazioni rispetto alla mediana dei giorni vicini con lo stesso giorno della settimana.*
 
-**Prima dell’uso operativo:** test dal vivo su più stagioni, archivi delle revisioni e cancellazioni dei voli, dati su interruzioni e capacità dei treni.
+Il giorno dopo il GP, entrambi i modelli con i voli hanno sottostimato di **circa 930 viaggi** il totale verso l’aeroporto.
 
-<!-- Fonte: paper/main.tex e le cinque figure del paper, tutte esaminate. Il lavoro non dimostra riduzioni di costi, code o numero di treni. Per queste conclusioni servono dati operativi e sulla distribuzione degli arrivi all’interno dell’ora. -->
+**Da verificare:** un calendario degli eventi aiuta a prevedere gli arrivi prima dell’evento e le partenze dopo?
+
+<!-- Fonte: sezione 5.5 del paper. La vigilia della Fiera del Libro per Ragazzi registra aumenti in entrambi i flussi anche nel 2024. I conteggi aggregati non permettono di distinguere tra cambiamenti nel tipo di viaggiatori e nella scelta del mezzo. -->
+
+---
+
+# 9. Che cosa abbiamo imparato?
+
+- Il conteggio dei voli riduce l’errore rispetto al calendario in **tutti e nove i metodi** provati, in entrambe le direzioni. Il guadagno è più evidente verso la stazione.
+- A maggio, le **medie recenti della navetta** battono entrambi i modelli con i voli. Resta da verificare quanto i voli aggiungano a un modello che usa già questi conteggi.
+
+Il test copre tre mesi di servizio ordinario registrato. Per una verifica prospettica servono orari dei voli archiviati e conteggi della navetta con l’ora in cui diventano disponibili.
