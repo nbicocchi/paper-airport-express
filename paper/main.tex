@@ -327,6 +327,36 @@ Observed counts fall at or below the quantile forecast in 90.2\% of station-boun
 
 In summary, good average accuracy does not guarantee that passenger surges will be anticipated. An upper-quantile forecast addresses underestimation more directly, but does not guarantee enough capacity in every hour. Further calibration and information about train capacity and within-hour arrivals would be needed before translating these forecasts into an operational reserve.
 
+\subsection{Event context for high-demand days}
+\label{sec:event_context}
+Across the available shuttle months, 44 dates had more than 3,000 recorded ordinary-service trips in at least one direction, yielding 47 date--direction cases. Directional air passenger counts were available for 38 of these cases. For each series and direction, we compared the observed volume with the median of the other dates on the same weekday within four weeks before or after the target date. Air passenger counts cover the full day, and shuttle comparisons use complete hourly records from 05:00 to 23:00. For dates in the forecast test period, we summed the signed hourly errors over the same shuttle window. Table~\ref{tab:event_context} presents selected cases with concurrent increases, recurrence across editions, or large forecast errors.
+
+\begin{table}[!htbp]
+\centering\small
+\caption{Selected high-demand days and event context. Parentheses show percentage deviations from the matched-weekday median. Arrivals pair inbound air passengers with airport-to-station trips; departures pair outbound air passengers with station-to-airport trips. Errors are predicted minus observed shuttle trips. Dashes indicate dates outside the forecasting test period.}
+\label{tab:event_context}
+\setlength{\tabcolsep}{3pt}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{@{}p{0.28\linewidth}llrrrr@{}}
+\toprule
+Event and timing & Date & Flow & Air passengers & Shuttle trips & SCHED & PAX \\
+\midrule
+TANEXPO eve & 3 Apr 2024 & Arrivals & 16,650 ($+27.5$\%) & 3,140 ($+48.1$\%) & --- & --- \\
+Children's Book Fair eve & 7 Apr 2024 & Arrivals & 17,357 ($+14.0$\%) & 3,118 ($+46.5$\%) & --- & --- \\
+Cersaie opening; day after Ironman & 23 Sep 2024 & Arrivals & 20,076 ($+6.3$\%) & 3,726 ($+37.4$\%) & --- & --- \\
+Cersaie opening; day after Ironman & 23 Sep 2024 & Departures & 19,530 ($+12.8$\%) & 3,325 ($+34.8$\%) & --- & --- \\
+Children's Book Fair eve & 30 Mar 2025 & Arrivals & 18,330 ($+19.8$\%) & 3,005 ($+42.5$\%) & $-209$ & $-200$ \\
+May Day weekend, final day & 4 May 2025 & Departures & 18,290 ($-0.9$\%) & 3,458 ($+15.2$\%) & $-728$ & $-756$ \\
+Day after the Imola Grand Prix & 19 May 2025 & Departures & 19,243 ($+7.7$\%) & 3,362 ($+29.1$\%) & $-935$ & $-930$ \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+Among the 38 cases with both series available, the day before TANEXPO~\cite{eventfairs2024} ranked first by the smaller of the two percentage deviations. The eve of the Bologna Children's Book Fair coincided with above-reference arrivals in both series in 2024 and 2025~\cite{eventfairs2024,eventfairs2025}. Both shuttle directions were more than 34\% above their references on 23 September 2024, when Cersaie opened the day after the Ironman races in Cervia~\cite{eventcersaie,eventironman}. The overlap leaves the contribution of each event unresolved. Conversely, on the eve of Cosmoprof 2025, air arrivals were 15.7\% above their reference while shuttle trips toward the station were 23.7\% below theirs~\cite{eventfairs2025}. That day fell below the shuttle threshold.
+
+At the end of the May Day holiday weekend, departures by air were near their reference while shuttle trips toward the airport were 15.2\% higher~\cite{eventmayday}. On the Monday after the Emilia-Romagna Grand Prix, both flows were above their references, and SCHED and PAX underpredicted shuttle demand toward the airport by about 930 trips each~\cite{eventimola}. This was the largest daily underprediction for either model among the 13 test cases above the threshold. The comparisons are retrospective, and the aggregate counts cannot identify event attendees or measure occupancy inside the terminal.
+
 \subsection{Robustness to forecasting algorithm}
 \label{sec:algorithm_results}
 Scheduled flight counts reduce MAE relative to CAL in all 18 method--direction comparisons. Sixteen seven-day-block nominal intervals exclude zero; ten remain positive under the simultaneous intervals. These are correlated comparisons on one holdout, not 18 independent replications. Passenger estimates improve on SCHED in 12 comparisons, with changes ranging from $-3.48$\% to $2.55$\%; only the station-bound regularized linear model retains a positive simultaneous interval. The small additional gain is therefore model-dependent, whereas the direction of the flight-count benefit is consistent across the tested methods.
@@ -347,7 +377,7 @@ Upper-quantile forecasts address underestimation more directly than mean forecas
 \subsection{Limitations and next steps}
 The retrospective test covers three consecutive months of recorded ordinary-service hours, not a complete seasonal cycle or all service conditions. Fixed models may become less representative over time, and the source files do not verify real-time input availability. Aggregate associations cannot identify individual transfers or establish causal effects.
 
-Prospective validation needs continuous directional counts with explicit replacement and shutdown labels, archived schedules including cancellations and revisions, and timestamps documenting input availability. Testing should then cover consecutive seasons with model choices fixed in advance. A priority is to combine flight features with recent shuttle history, testing whether schedules still add value when forecasts already respond to current use.
+Prospective validation needs continuous directional counts with explicit replacement and shutdown labels, archived schedules including cancellations and revisions, and timestamps documenting input availability. Testing should then cover consecutive seasons with model choices fixed in advance. A priority is to combine flight features with recent shuttle history, testing whether schedules still add value when forecasts already respond to current use. A prospective comparison could also test whether event calendars available at forecast issuance improve predictions, using separate windows for arrivals before events and departures after them.
 
 \section{Conclusions}
 We studied whether flight information improves hourly trip forecasts for Bologna's Marconi Express in both directions, training once before March 2025 and testing on March--May. The main contribution is a staged comparison: adding scheduled flight counts first, then historical passenger estimates, while keeping the forecasting model unchanged. Flight counts reduce full-period MAE by 8.7\% toward the station and 3.7\% toward the airport relative to calendar boosting. Passenger estimates add about 0.5\% in each direction, and neither full-period interval nor any of the six monthly intervals for this additional gain excludes zero.
