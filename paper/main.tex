@@ -6,26 +6,21 @@
 \usepackage[hidelinks]{hyperref}
 \urlstyle{same}
 \graphicspath{{figures/}}
-\hypersetup{pdftitle={When do flight schedules improve airport rail demand forecasts?},pdfauthor={Author information pending}}
+\hypersetup{pdftitle={The Value of Flight Schedules for Hourly Airport Rail Demand Forecasting: Evidence from Bologna},pdfauthor={Nicola Bicocchi, Marco Mamei}}
 \newcommand{\AS}{\ensuremath{A\!\rightarrow\!S}}
 \newcommand{\SA}{\ensuremath{S\!\rightarrow\!A}}
 \newcommand{\DeltaGain}{\ensuremath{\Delta}}
 \journal{Computers \& Electrical Engineering}
 \begin{document}
 \begin{frontmatter}
-\title{Do flight schedules improve airport rail demand forecasts?\\
-Evidence from Bologna’s Marconi Express}
-\author{Author information pending completion}
+\title{The Value of Flight Schedules for Hourly Airport Rail Demand Forecasting: Evidence from Bologna}
+\author[dief]{Nicola Bicocchi}
+\author[dismi]{Marco Mamei}
+\address[dief]{“Enzo Ferrari” Department of Engineering, University of Modena and Reggio Emilia, Modena, Italy}
+\address[dismi]{Department of Sciences and Methods for Engineering, University of Modena and Reggio Emilia, Reggio Emilia, Italy}
 \begin{abstract}
-Do flight schedules improve hourly airport shuttle forecasts beyond calendar patterns and past shuttle use?
-We address this question for Bologna's Marconi Express in both directions, using a chronological split of the airport and shuttle records.
-The flight-based and calendar models use all eligible observations through February 2025 for training and remain fixed throughout the March--May 2025 test period.
-We add scheduled flight counts and then historical passenger estimates to a calendar model, keeping the algorithm and training rules unchanged to distinguish the value of the two flight inputs.
-Without advance booking data, passenger estimates use historical averages for the same flight number and direction, with broader averages when needed.
-Secondary robustness checks vary the forecasting algorithm and compare forecasts with simple historical shuttle averages.
-Scheduled flight counts reduce test-period mean absolute error by 8.7\% toward the station and 3.7\% toward the airport relative to the calendar model. Passenger estimates add about 0.5\% in each direction, with paired-day 95\% intervals that include zero.
-The evaluation is retrospective and restricted to recorded ordinary-service hours: archived schedules and record-delivery times are unavailable.
-The findings support evaluating flight counts before investing in more detailed passenger estimates, while checking performance across months and travel directions.
+Do scheduled flight counts improve hourly airport shuttle forecasts beyond calendar patterns, and does estimating passenger numbers from historical flight records improve accuracy further? We compare three models for Bologna's Marconi Express in each direction, adding flight counts and then passenger estimates while keeping the algorithm and training rules fixed. Shuttle training records end in September 2024. Passenger estimates use flight records through February 2025. We evaluate the fixed models on recorded ordinary-service hours in March--May 2025. Relative to the calendar model, flight counts reduce mean absolute error by 8.7\% toward the station and 3.7\% toward the airport. Adding passenger estimates reduced mean absolute error by about 0.5\% in each direction, with uncertainty intervals spanning small gains and small losses. Flight counts thus account for most of the observed gain, particularly toward the station. The evaluation is retrospective because archived schedules and record-delivery times are unavailable.
+
 \end{abstract}
 \begin{keyword}
 airport rail \sep demand forecasting \sep flight schedules \sep chronological evaluation \sep missing observations \sep quantile prediction
@@ -34,15 +29,15 @@ airport rail \sep demand forecasting \sep flight schedules \sep chronological ev
 \section{Introduction}
 An airport rail shuttle connects travelers leaving the airport after arrival with those reaching it before departure. These flows need not peak at the same time. Passengers on a flight scheduled to arrive at 14:00 may use the shuttle later, after collecting their baggage, whereas passengers departing at 14:00 may travel toward the airport several hours earlier. Forecasting hourly trips in each direction could help operators anticipate busy periods, although hourly totals alone cannot determine train frequency or capacity needs.
 
-Flight schedules are a natural input, but their predictive value is not automatic. Shuttle use follows recurring hourly and weekly patterns, and the service may carry airport employees and other users as well as air passengers. An afternoon peak in both arrivals and shuttle trips does not establish the value of flight information if a calendar model already predicts that peak. The relevant question is whether schedules improve forecasts beyond calendar patterns and past shuttle use. Previous work at O'Hare found only marginal improvements from adding flight schedules to ground-access forecasts~\cite{ohare}.
+Flight schedules are a natural input, but their predictive value is not automatic. Shuttle use follows recurring hourly and weekly patterns, and the service may carry airport employees and other users as well as air passengers. An afternoon peak in both arrivals and shuttle trips does not establish the value of flight information if a calendar model already predicts that peak. We therefore ask how much scheduled flight counts improve on a forecast based on calendar patterns. Previous work at O'Hare found only marginal improvements from adding flight schedules to ground-access forecasts~\cite{ohare}.
 
 Even when schedules help, the required level of detail remains unclear. Flight counts treat lightly loaded and full flights alike. Passenger estimates could better describe potential shuttle use, but require historical passenger data, and not all air passengers use the shuttle. Their incremental value must therefore be tested against a model that already uses flight counts, not only against a calendar model.
 
-We study these questions using Bologna's Marconi Express, which links the airport and the central railway station. We predict recorded passenger trips per hour separately for airport to station (\AS) and station to airport (\SA). We use all eligible observations before March 2025 for training and reserve March--May 2025 for testing, without refitting the models during this period. We first compare a calendar model with models that also use scheduled flight counts, and then add passenger estimates derived from training-period flights. We also include a simple forecast based on recent shuttle counts. This last comparison matters because a forecast can improve by responding to recent changes in shuttle use, without requiring flight data.
+We study these questions using Bologna's Marconi Express, which links the airport and the central railway station. We predict recorded passenger trips per hour separately for airport to station (\AS) and station to airport (\SA). The last shuttle observations available for training are from September 2024. We test the fitted models in March--May 2025. We first compare a calendar model with models that also use scheduled flight counts, and then add passenger estimates derived from training-period flights. We also include a simple forecast based on recent shuttle counts. This last comparison matters because a forecast can improve by responding to recent changes in shuttle use, without requiring flight data.
 
 The evaluation covers recorded ordinary-service hours, not all service conditions. It excludes replacement-service hours, when shuttle trips are zero but passengers may travel by an alternative service. A separate limitation concerns the flight records: they contain scheduled times, but are not archived schedules from forecast issuance. We cannot verify, for example, whether they include planned flights that were later cancelled. The study is therefore a retrospective benchmark, not a validation of a live forecasting service.
 
-Within these limits, the contribution is a reproducible comparison of information sources, not a new forecasting algorithm. Holding the model and training rules fixed when adding flight counts and passenger estimates isolates the value of these inputs. Comparisons across directions, months, reference models, and forecasting algorithms assess the robustness of the findings. We also examine observed busy hours and an upper-quantile forecast because low average error can conceal missed passenger surges. These analyses do not measure queues, train occupancy, or unmet demand.
+Within these limits, the contribution is a reproducible comparison of information sources, not a new forecasting algorithm. Holding the model and training rules fixed when adding flight counts and passenger estimates isolates the value of these inputs. Comparisons across directions, months, reference models, and forecasting algorithms assess the robustness of the findings. We also examine observed busy hours and an upper-quantile forecast because low average error can conceal missed passenger surges.
 
 We address the following research questions:
 \begin{itemize}
@@ -52,7 +47,7 @@ We address the following research questions:
 \item \textbf{RQ4:} How well do the forecasts describe busy hours, and can upper-quantile prediction better address the risk of underestimation?
 \end{itemize}
 
-The paper is organized as follows: Section~2 reviews related work. Section~3 describes the dataset, the prediction target, and the limits of the available records. Section~4 presents the forecasting protocol, models, and evaluation methods. Section~5 reports the experiments addressing the research questions. Section~6 summarizes the answers and discusses their practical implications and limitations. Section~7 presents the conclusions and future work.
+The paper is organized as follows: Section~2 reviews related work. Section~3 describes the dataset, the prediction target, and the limits of the available records. Section~4 presents the forecasting protocol, models, and evaluation methods. Section~5 reports the experiments addressing the research questions. Section~6 discusses the findings, their transferability, and the study limitations. Section~7 presents the conclusions and future work.
 
 \section{Related work}
 \subsection{Airport access and passenger-flow prediction}
@@ -60,14 +55,14 @@ Airport rail services carry more than air passengers. Schabas~\cite{schabas} stu
 
 The closest forecasting comparison is the O'Hare study by Zuniga-Garcia et al.~\cite{ohare}. They use Gaussian processes to predict rail and transportation-network-company demand and find only marginal benefits from adding flight schedules. We ask a related question for a dedicated airport--station shuttle. We also distinguish flight counts from estimates of the passengers carried by those flights. Because the services and datasets differ, we do not compare prediction errors directly across airports.
 
-Other studies focus on the forecasting algorithm. Qin et al.~\cite{qin} combine Holt--Winters forecasting, empirical mode decomposition, and a gated recurrent unit to predict Daxing airport light-rail use from twelve days of hourly data. DeepPF~\cite{deeppf} uses transportation knowledge to predict metro entries and exits. ResLSTM~\cite{reslstm} combines residual, graph, and recurrent components for station-flow prediction. DCRNN~\cite{dcrnn} and STGCN~\cite{stgcn} model relationships between locations in road networks. These relationships are not available in our data, which describe only one connection and two travel directions.
+Other studies focus on the forecasting algorithm. Qin et al.~\cite{qin} combine Holt--Winters forecasting, empirical mode decomposition, and a gated recurrent unit to predict Daxing airport light-rail use from twelve days of hourly data. Metro and road forecasting studies also exploit relationships among stations or road links~\cite{reslstm,dcrnn,stgcn}. Our records describe a single shuttle connection in two directions.
 
 In the Bologna region, Bicocchi et al.~\cite{bicocchi2026flows} use anonymized mobile-network origin--destination records to study mobility and forecast inbound flows. Their work provides a regional view, whereas we focus on trips on a specific shuttle. These methods suggest possible extensions, but results from different datasets do not establish which algorithm would perform best here.
 
 \subsection{Transport forecasting and model choice}
 Vlahogianni et al.~\cite{trafficreview} emphasize that short-term traffic forecasting methods depend on the data and operating setting. Our target is passenger trips on an airport link, not road flow or speed. Flight activity may bring groups of travelers into the airport, but shuttle use depends on their transport choices and the time needed to reach the station. Baggage collection, for example, can spread passengers from one arriving flight across several shuttle hours. We test the predictive value of flight information, not superiority over methods developed for road traffic.
 
-Graph-based methods use relationships between connected stations or road links~\cite{graphsurvey}. Our records contain neither a station network nor individual train movements. We therefore use models suited to hourly tabular data, with calendar boosting as the main benchmark and historical shuttle averages as secondary checks.
+For this hourly comparison we use calendar boosting as the main benchmark and historical shuttle averages as secondary checks.
 
 \subsection{Information sets and chronological evaluation}
 Forecasting methods must distinguish information known in advance from information observed only after an event. Temporal Fusion Transformers make this distinction explicit~\cite{tft}. For example, a flight's planned departure time may be available before travel, while its final passenger count is not available in our data until afterward. We use gradient boosting~\cite{friedman} to compare these information sources while holding the forecasting algorithm fixed. It is an established method for tabular data, but broader model comparisons~\cite{tabular} do not establish that it is best for this particular service.
@@ -77,7 +72,7 @@ We train on earlier observations and test on later months because this matches t
 Evaluation also depends on which hours are recorded. Missing-data theory~\cite{rubin} explains why results on a selected set of observations need not describe the full service period. We therefore state which hours enter each comparison. Following work on forecast accuracy~\cite{accuracy} and bootstrap evaluation~\cite{bootstrap}, we report several error measures and compare models on the same hours rather than relying on a single error value.
 
 
-Testing on later shuttle observations does not, by itself, prove that all flight inputs were available when a forecast would have been made. A file of completed flights can retain their scheduled times while omitting flights that were planned but cancelled. Kapoor and Narayanan~\cite{leakage} discuss how unavailable information can enter an evaluation and make its results misleading. We therefore check both how inputs are constructed and what the source records contain. Without archived schedules, our tests remain retrospective comparisons rather than a verified live forecasting evaluation.
+Kapoor and Narayanan~\cite{leakage} discuss the risk of evaluating forecasts with information unavailable at issuance. For flight schedules, this includes revisions and cancellations recorded after a forecast would have been issued.
 
 Tashman~\cite{tashman} emphasizes repeated out-of-sample testing and recalibration. Cerqueira et al.~\cite{cerqueira} compare evaluation methods for series with different behavior over time, while Hewamalage et al.~\cite{hewamalage} discuss problems with reference models, error measures, and unavailable inputs. These studies motivate a chronological holdout and reporting both the complete test period and each month separately. Three consecutive months cannot establish performance across all seasons. We distinguish models kept fixed throughout testing from a reference that receives new shuttle counts each day.
 
@@ -142,22 +137,13 @@ The indicator $O_{d,t}$ describes whether an ordinary-service count is present, 
 
 \section{Forecasting protocol and methodology}
 \subsection{Chronological training and test split}
-We use a single chronological split. All eligible shuttle observations through February 28, 2025 form the training set; recorded hours from March 1 through May 31, 2025 form the test set. These are the last three complete months with both airport and shuttle data. Months without shuttle records contribute no observations and are not filled with artificial counts.
+The shuttle training set comprises recorded hours in March, April, May, August, and September 2024. There are no shuttle records from October 2024 through February 2025. The test set covers March 1 through May 31, 2025, the last three complete months with overlapping airport and shuttle records.
 
-We fit one model per direction using the training set and estimate flight-passenger averages using airport records before March 1, 2025. The fitted models, historical averages, and model settings remain fixed throughout the three-month test period. Test-period shuttle counts are used only for evaluation, except by the explicitly daily-updated reference described below. The 2023 airport records contribute to passenger estimation but have no corresponding shuttle training observations. The available shuttle training history ends in September 2024 because no subsequent records precede the test period. Table~\ref{tab:samples} reports the resulting sample sizes.
+We fit one model per direction using the training set and estimate flight-passenger averages using airport records before March 1, 2025. The fitted models, historical averages, and model settings remain fixed throughout the three-month test period. Test-period shuttle counts are used only for evaluation, except by the explicitly daily-updated reference described below. The 2023 airport records contribute to passenger estimation but have no corresponding shuttle training observations.
 
 We predict the hourly bins starting from 05:00 through 23:00. This is a retrospective holdout evaluation, not a simulation of forecasts issued at a specific time of day. Flight inputs use scheduled times retained in the airport records. Archived schedules are unavailable, so the evaluation does not establish real-time forecasting performance. We report accuracy over the complete test period and separately for March, April, and May, always comparing models on identical eligible hours within each direction.
 
-\begin{table}[t]
-\centering
-\caption{Recorded ordinary-service hours for the chronological split. The same pre-March training set is used for all three test months.}
-\label{tab:samples}
-\begin{tabular}{lrrrr}\toprule
-&\multicolumn{2}{c}{Airport to station}&\multicolumn{2}{c}{Station to airport}\\
-Test month&Training&Test&Training&Test\\\midrule
-\input{tables/sample_rows.tex}
-\end{tabular}
-\end{table}
+The training set contains 2,459 hourly observations toward the station and 2,460 toward the airport. The corresponding test sets contain 1,490 and 1,491 observations. The monthly counts in March, April, and May are 356, 547, and 587 toward the station and 354, 548, and 589 toward the airport.
 
 \subsection{Input families and model overview}
 The main comparison uses two families of forecasting inputs (features):
@@ -184,7 +170,7 @@ PAX & SCHED inputs and historical passenger estimates & Fixed model and passenge
 \subsection{Experimental design and research questions}
 We retain valid ordinary-service counts within the hourly grid and airport-data period, estimate passengers per flight from pre-cutoff history, and aggregate flight counts and passenger estimates into hourly inputs. We use the same fixed time windows for training and testing. A separate model for each direction is fitted once to pre-March shuttle counts and evaluated on common test hours. The fixed models never use observed test-period shuttle counts as inputs.
 
-The comparisons are designed to answer the research questions directly. For RQ1, CAL, SCHED, and PAX successively add flight counts and passenger estimates while keeping the forecasting algorithm and training rules fixed. For RQ2, we examine these comparisons over the full holdout and its three constituent months in both directions, and assess directional differences on common hours. For RQ3, we replace passenger estimates and scheduled times separately with actual outcomes. For RQ4, we evaluate errors on observed peak hours, calibration by predicted-count group, and the pinball loss and coverage of an upper-quantile forecast. Comparisons with simple historical averages are secondary robustness checks, not part of the controlled feature comparison.
+We report errors for each direction over the full test period and for each month. To compare gains between directions, we use only hours with observations in both directions.
 
 The single training cutoff makes the information comparison uniform across the holdout. However, a fixed model may become less representative as shuttle use changes during testing. The flight windows are measured from the hour being predicted and may cross day boundaries. Historical passenger averages use only completed flights before the training cutoff, identified by block time.
 
@@ -210,13 +196,13 @@ The main point-forecast models and actual-outcome diagnostics use squared-error 
 
 To explore what changes when actual flight outcomes are known, we make three after-the-event substitutions in PAX: actual passenger counts at scheduled times, passenger estimates at block times, and actual passenger counts at block times. All three retain PAX's 24 inputs and forecasting algorithm. Changing a timestamp moves both flight counts and passenger totals between hourly bins.
 
-These variants address RQ3 as diagnostic comparisons, not advance forecasts. Actual outcomes may include flights in windows that cross the training cutoff, while shuttle-model training and historical passenger estimation still use only pre-cutoff records. None of the variants adds low-cost or domestic-flight inputs, so the comparisons isolate changes in passenger counts and timing rather than introducing additional flight characteristics.
+These variants address RQ3 as diagnostic comparisons, not advance forecasts. Actual outcomes may include flights in windows that cross the training cutoff, while shuttle-model training and historical passenger estimation still use only pre-cutoff records.
 
 
 \subsection{Secondary robustness checks}
 Two simple historical references check whether gains over CAL also improve on straightforward shuttle-use profiles. MEAN predicts the training-set average for the target hour and weekday and remains fixed throughout testing. RECENT averages recorded counts for the same hour and weekday during the 28 calendar days before the target day. If no matching observations are available, it falls back to MEAN, or to the overall training-set average if needed.
 
-RECENT can use completed days from the test period, but never the target day or later days. It therefore differs from the main models in both method and access to new shuttle observations; it does not isolate the effect of flight features. The gap preceding March can require fallback to training-set averages. This check assumes completed-day counts are usable on subsequent days, although delivery times are not recorded. These comparisons qualify the scope of the main findings rather than define additional primary forecasting methods.
+RECENT can use completed days from the test period, but never the target day or later days. It therefore differs from the main models in both method and access to new shuttle observations; it does not isolate the effect of flight features. This check assumes completed-day counts are usable on subsequent days, although delivery times are not recorded.
 
 A separate sensitivity scenario fills missing 05:00--23:00 ordinary-service counts with zero within the supplied months and repeats the CAL, SCHED, and PAX comparison using the same training cutoff. It changes both training and test samples and is not treated as a correction of the observed-hour benchmark.
 
@@ -229,7 +215,7 @@ Separate controls change only the original or tuned histogram model's loss to ab
 \subsection{Error measures and paired comparisons}
 Our main accuracy measure is mean absolute error (MAE), expressed in trips/hour. We also report RMSE, which emphasizes large errors; WAPE, the total absolute error divided by total observed trips, expressed as a percentage; and $R^2$. Scores are calculated separately for each direction, over the full test period and each month, using identical recorded hours for all models. Full-period scores use the underlying predictions rather than averages of monthly percentages.
 
-We express improvement over a reference as $100(1-\mathrm{MAE}_{model}/\mathrm{MAE}_{reference})$, so positive values indicate lower error. We obtain 95\% intervals from 1,000 paired bootstrap samples of whole test days, using the same sampled days for both forecasts and calculating improvement from their total absolute errors. Directional comparisons retain only hours observed in both directions and report the difference between their percentage improvements. Resampling days preserves within-day dependence but not dependence between days, which may make intervals too narrow. The intervals are not adjusted for multiple comparisons and do not establish performance in other seasons.
+We express improvement over a reference as $100(1-\mathrm{MAE}_{model}/\mathrm{MAE}_{reference})$, so positive values indicate lower error. We obtain 95\% intervals from 1,000 paired bootstrap samples of whole test days, using the same sampled days for both forecasts and calculating improvement from their total absolute errors. Directional comparisons retain only hours observed in both directions and report the difference between their percentage improvements. Resampling days preserves within-day dependence but not dependence between days, which may make intervals too narrow. The intervals are not adjusted for multiple comparisons.
 
 For the additional algorithm checks only, we use 20,000 paired moving-block bootstrap samples of seven consecutive calendar days~\cite{blockbootstrap}, retaining recording gaps and applying the same sampled dates across methods and directions. Block lengths of one, three, and fourteen days provide sensitivity checks. We also construct approximate simultaneous 95\% intervals using the bootstrap maximum absolute standardized deviation across 102 full-period contrasts: the three within-method feature comparisons and comparisons with the original model at matched inputs, in both directions. These intervals condition on the selected configurations; monthly, loss, and other sensitivity comparisons remain exploratory.
 
@@ -255,9 +241,9 @@ Model&MAE&WAPE (\%)&Peak MAE&MAE&WAPE (\%)&Peak MAE\\\midrule
 
 Relative to CAL, SCHED reduces MAE by 8.7\% $[4.1,12.6]$ toward the station and 3.7\% $[-0.2,7.4]$ toward the airport. The corresponding PAX improvements are 9.1\% $[4.8,13.1]$ and 4.2\% $[0.1,7.9]$. Most of the reduction is therefore already achieved by flight counts. Passenger estimates add only 0.5\% $[-1.3,2.3]$ and 0.5\% $[-1.3,2.2]$ over SCHED.
 
-The monthly comparisons support the same interpretation. PAX improves on SCHED by 0.2\%, 0.4\%, and 0.8\% toward the station in March, April, and May, and by 0.3\%, $-0.2$\%, and 1.1\% toward the airport. All six monthly intervals include zero. Thus, the historical passenger estimates provide little additional accuracy under this specification. These comparisons measure predictive improvements, not causal effects of passenger volume.
+Toward the station, adding passenger estimates reduced MAE by 0.2\% in March, 0.4\% in April, and 0.8\% in May. Toward the airport, MAE fell by 0.3\% in March and 1.1\% in May. In April it rose by 0.2\%. All six monthly intervals include zero.
 
-Table~\ref{tab:main} also reports the historical references. Over the complete test period, PAX improves on MEAN by 16.2\% $[11.4,20.9]$ toward the station and 10.7\% $[4.7,16.6]$ toward the airport. Improvements over RECENT are 9.5\% $[1.6,16.4]$ and 7.2\% $[-2.9,15.6]$, respectively. However, RECENT performs better in May, with MAEs of 29.69 and 22.46 compared with PAX's 31.12 and 27.68; MEAN also beats PAX toward the airport that month. RECENT's preceding data gap in March and its access to new counts during testing complicate a single ranking. These checks qualify the scope of the main gains rather than isolate the effect of flight inputs.
+Table~\ref{tab:main} also reports the historical references. Over the complete test period, PAX improves on MEAN by 16.2\% $[11.4,20.9]$ toward the station and 10.7\% $[4.7,16.6]$ toward the airport. Improvements over RECENT are 9.5\% $[1.6,16.4]$ and 7.2\% $[-2.9,15.6]$, respectively. However, RECENT performs better in May, with MAEs of 29.69 and 22.46 compared with PAX's 31.12 and 27.68; MEAN also beats PAX toward the airport that month. In March, RECENT found a matching count in the preceding 28 days for 223 of 356 evaluated hours toward the station and 221 of 354 toward the airport. For the remaining hours it used its training-set fallback. In April and May, it found a recent match for every evaluated hour in both directions.
 
 \subsection{RQ2: Consistency across directions and months}
 \begin{figure}[t]
@@ -270,12 +256,12 @@ To answer RQ2, we examine whether improvements over CAL persist across months an
 
 PAX has lower MAE than CAL in all three months and both directions, but the gains vary. Toward the station, reductions are 13.7\% in March, 1.0\% in April, and 12.9\% in May; the March and May intervals exclude zero. Toward the airport, reductions are 7.3\%, 1.5\%, and 4.7\%, and all three monthly intervals include zero. A lower error in every monthly comparison therefore does not establish an equally reliable benefit in both directions.
 
-On the 1,486 hours observed in both directions, the full-period PAX improvement over CAL is 4.76 percentage points larger toward the station, with an interval of $[0.01,9.51]$. This is weak evidence of a directional difference: the lower endpoint is close to zero, and only May has a monthly interval excluding zero. Directional differences in the additional gain over SCHED are compatible with zero throughout. These comparisons do not establish a uniform directional advantage or a causal effect of airport transfers.
+On the 1,486 hours observed in both directions, the full-period PAX improvement over CAL is 4.76 percentage points larger toward the station, with an interval of $[0.01,9.51]$. This is weak evidence of a directional difference: the lower endpoint is close to zero, and only May has a monthly interval excluding zero. Directional differences in the additional gain over SCHED are compatible with zero throughout.
 
 
-Every test month uses the same training history. Differences between monthly scores can therefore reflect changes in shuttle use and flight activity, but not monthly refitting. Three consecutive months remain insufficient to establish seasonal generalization, and May alone cannot establish general performance.
+Every test month uses the same training history. Differences between monthly scores can therefore reflect changes in shuttle use and flight activity, but not monthly refitting.
 
-Figure~\ref{fig:week} plots May 1--7, a fixed week rather than a period selected for good performance, to illustrate missed bursts and mistimed peaks. Lines stop at gaps and overnight to avoid implying continuous observations. All reported errors use the full recorded test-month samples. Additional model and directional comparisons are saved in the repository.
+Figure~\ref{fig:week} plots May 1--7, a fixed week rather than a period selected for good performance, to illustrate missed bursts and mistimed peaks. Lines stop at gaps and overnight to avoid implying continuous observations. All reported errors use the full recorded test-month samples.
 
 \begin{figure}[t]
 \centering\includegraphics[width=.98\textwidth]{week.pdf}
@@ -283,24 +269,22 @@ Figure~\ref{fig:week} plots May 1--7, a fixed week rather than a period selected
 \label{fig:week}
 \end{figure}
 
-Overall, the main comparison concerns gains over CAL and their consistency across months and directions, rather than a ranking of all possible forecasting methods.
-
 \subsection{RQ3: Substitution of actual flight outcomes}
 The airport dataset contains both scheduled times and recorded flight outcomes: actual non-transit passenger counts and block times. These outcomes are available retrospectively, but would not generally be known before the flight operates. PAX therefore uses scheduled times and passenger estimates derived only from flights before the training cutoff, rather than the actual passenger count of each test-period flight. Block times describe aircraft ground movements, not separately verified landing or takeoff times.
 
 RQ3 asks whether replacing these estimates and scheduled times with the recorded outcomes changes accuracy. This helps assess how sensitive the model is to passenger estimation and flight timing; it does not simulate an advance forecast. We make the substitutions in both training and testing, keeping the feature structure, algorithm, and pre-March training cutoff unchanged (Table~\ref{tab:main}).
 
-Using actual passengers at scheduled times gives full-period MAEs of 30.57 toward the station and 24.89 toward the airport. The improvements over PAX are 0.9\% $[-1.7,3.3]$ and $-0.1$\% $[-3.3,3.0]$, providing no clear gain in either direction.
+Using actual passenger counts at scheduled times gives full-period MAEs of 30.57 toward the station and 24.89 toward the airport. Relative to PAX, MAE fell by 0.9\% toward the station and rose by 0.1\% toward the airport. The 95\% interval for the decrease toward the station was $[-1.7,3.3]\%$, and the interval for the increase toward the airport was $[-3.0,3.3]\%$.
 
-Replacing scheduled times with block times, while keeping passenger estimates, gives MAEs of 30.08 and 25.85. This improves station-bound MAE by 2.5\% $[-0.5,5.3]$ but worsens airport-bound MAE by 4.0\%, with an improvement interval of $[-6.8,-1.5]$. Changing both quantities gives MAEs of 29.50 and 25.89: an improvement of 4.4\% $[0.8,7.7]$ toward the station and a deterioration of 4.2\% $[-7.6,-1.0]$ toward the airport. Actual outcomes thus have different effects in the two directions.
+Using block times with estimated passenger counts reduced station-bound MAE to 30.08, a decrease of 2.5\% (95\% interval for the decrease $[-0.5,5.3]\%$). Airport-bound MAE rose to 25.85, an increase of 4.0\% (95\% interval for the increase $[1.5,6.8]\%$). Using both actual passenger counts and block times reduced station-bound MAE to 29.50, down 4.4\% ($[0.8,7.7]\%$), and raised airport-bound MAE to 25.89, up 4.2\% ($[1.0,7.6]\%$).
 
-Actual flight outcomes therefore do not automatically improve accuracy under this model specification. These substitutions are diagnostic comparisons, not guaranteed best-case forecasts or upper bounds on achievable accuracy. They do not explain why a substitution helps or hurts, and the substituted outcomes remain unavailable before travel.
+Both variants using block times reduced error toward the station and increased it toward the airport. Substituting observed flight outcomes therefore gave no consistent advantage across directions.
 
 \subsection{RQ4: Peak errors, calibration, and quantile prediction}
 \label{sec:peaks}
-RQ4 asks whether good average accuracy also means that busy hours are predicted well. We distinguish three questions: how large the errors are when observed use is high; whether hours predicted to be busy are equally busy on average; and whether a more cautious, upper-quantile forecast can reduce the risk of underestimation. The first two questions select different sets of hours and should not be confused.
+RQ4 asks whether good average accuracy also means that busy hours are predicted well. We distinguish three questions: how large the errors are when observed use is high; whether hours predicted to be busy are equally busy on average; and whether a more cautious, upper-quantile forecast can reduce the risk of underestimation.
 
-\paragraph{Errors during observed peaks.}
+\paragraph{Errors during observed peaks}
 We first select hours whose observed count reaches the training-data 90th percentile. The fixed thresholds are 246 trips/hour toward the station and 219 toward the airport, identifying 113 and 129 test hours, respectively. These hours are identified after their counts are observed, not in advance by the model. PAX's peak MAEs are 59.64 and 49.40, compared with 30.86 and 24.85 over all test hours. Thus, the overall MAE conceals substantially larger errors during the busiest observed hours.
 
 The forecasts are usually too low in this selected sample: underprediction occurs in 95.6\% of station-bound peak hours and 92.2\% of airport-bound peak hours. Defining signed error as prediction minus observation, the average errors are $-58.81$ and $-47.85$ trips/hour. The 10th--90th error percentiles are $[-106.2,-9.7]$ and $[-89.0,-8.0]$. Figure~\ref{fig:calibration} shows the error distributions.
@@ -313,19 +297,17 @@ The forecasts are usually too low in this selected sample: underprediction occur
 
 This finding does not, by itself, establish systematic underprediction. PAX estimates the average count for given inputs, rather than the largest count that might occur. An unexpected group of travelers can push an otherwise ordinary hour into the observed-peak sample, making even a correctly estimated average look too low. Selecting unusually high observations therefore also selects unexpected upward deviations. This check shows how much error occurs during realized surges, but not whether the model's high forecasts are generally too low.
 
-\paragraph{Observed use when the model predicts a busy hour.}
+\paragraph{Observed use when the model predicts a busy hour}
 We next reverse the selection: instead of choosing hours with high observed counts, we group hours by their predicted counts. Five groups, with boundaries defined from training predictions, check whether average forecasts agree with average observations at each prediction level. In the highest prediction group over the full test period, forecasts actually \emph{exceed} observed averages by 19.21 trips/hour toward the station and 14.75 toward the airport.
 
 There is no contradiction between this overprediction and the underprediction of observed peaks: the busiest observed hours and the hours predicted to be busiest are not the same set. The model can miss an unexpected surge while overestimating another hour that appeared likely to be busy. Figure~\ref{fig:calibration} presents both perspectives. Agreement within five groups is only a coarse calibration check and does not establish accuracy for every combination of inputs.
 
-\paragraph{A more cautious forecast.}
+\paragraph{A more cautious forecast}
 For planning purposes, an operator may prefer an upper estimate to an average. We therefore train a 90th-percentile model with the PAX inputs, the same boosting settings, and the same pre-March cutoff. Its target is a count below which approximately 90\% of outcomes should fall for given inputs, rather than the expected average count. This is distinct from using the training-data 90th percentile to identify observed peaks above.
 
 Pinball loss evaluates this upper forecast by penalizing underestimation nine times as much as an equal overestimation. Its full-period losses are 7.26 toward the station and 5.78 toward the airport, compared with 13.80 and 10.50 for the mean-oriented PAX forecasts. The quantile model is therefore better suited to this asymmetric objective; this does not imply that it is a better estimate of the average count.
 
 Observed counts fall at or below the quantile forecast in 90.2\% of station-bound hours and 88.2\% of airport-bound hours. Monthly coverage ranges from 89.8--90.9\% and 87.6--88.7\%, respectively. Coverage is therefore close to the target toward the station but consistently below it toward the airport. Among hours selected afterward as observed peaks, coverage is only 47.8\% and 39.5\%. This does not contradict the overall target: 90\% coverage over all hours does not promise 90\% coverage within a subset selected for unusually high observations.
-
-In summary, good average accuracy does not guarantee that passenger surges will be anticipated. An upper-quantile forecast addresses underestimation more directly, but does not guarantee enough capacity in every hour. Further calibration and information about train capacity and within-hour arrivals would be needed before translating these forecasts into an operational reserve.
 
 \subsection{Event context for high-demand days}
 \label{sec:event_context}
@@ -333,7 +315,7 @@ Across the available shuttle months, 44 dates had more than 3,000 recorded ordin
 
 \begin{table}[!htbp]
 \centering\small
-\caption{Selected high-demand days and event context. Parentheses show percentage deviations from the matched-weekday median. Arrivals pair inbound air passengers with airport-to-station trips; departures pair outbound air passengers with station-to-airport trips. Errors are predicted minus observed shuttle trips. Dashes indicate dates outside the forecasting test period.}
+\caption{Selected high-demand days. Percentages are relative to the matched-weekday median. SCHED and PAX show forecast minus observed shuttle trips for dates in the test period.}
 \label{tab:event_context}
 \setlength{\tabcolsep}{3pt}
 \resizebox{\linewidth}{!}{%
@@ -343,7 +325,7 @@ Event and timing & Date & Flow & Air passengers & Shuttle trips & SCHED & PAX \\
 \midrule
 TANEXPO eve & 3 Apr 2024 & Arrivals & 16,650 ($+27.5$\%) & 3,140 ($+48.1$\%) & --- & --- \\
 Children's Book Fair eve & 7 Apr 2024 & Arrivals & 17,357 ($+14.0$\%) & 3,118 ($+46.5$\%) & --- & --- \\
-Cersaie opening; day after Ironman & 23 Sep 2024 & Arrivals & 20,076 ($+6.3$\%) & 3,726 ($+37.4$\%) & --- & --- \\
+Cersaie opening; day after Ironman~\cite{eventcersaie,eventironman} & 23 Sep 2024 & Arrivals & 20,076 ($+6.3$\%) & 3,726 ($+37.4$\%) & --- & --- \\
 Cersaie opening; day after Ironman & 23 Sep 2024 & Departures & 19,530 ($+12.8$\%) & 3,325 ($+34.8$\%) & --- & --- \\
 Children's Book Fair eve & 30 Mar 2025 & Arrivals & 18,330 ($+19.8$\%) & 3,005 ($+42.5$\%) & $-209$ & $-200$ \\
 May Day weekend, final day & 4 May 2025 & Departures & 18,290 ($-0.9$\%) & 3,458 ($+15.2$\%) & $-728$ & $-756$ \\
@@ -353,26 +335,21 @@ Day after the Imola Grand Prix & 19 May 2025 & Departures & 19,243 ($+7.7$\%) & 
 }
 \end{table}
 
-Among the 38 cases with both series available, the day before TANEXPO~\cite{eventfairs2024} ranked first by the smaller of the two percentage deviations. The eve of the Bologna Children's Book Fair coincided with above-reference arrivals in both series in 2024 and 2025~\cite{eventfairs2024,eventfairs2025}. Both shuttle directions were more than 34\% above their references on 23 September 2024, when Cersaie opened the day after the Ironman races in Cervia~\cite{eventcersaie,eventironman}. The overlap leaves the contribution of each event unresolved. Conversely, on the eve of Cosmoprof 2025, air arrivals were 15.7\% above their reference while shuttle trips toward the station were 23.7\% below theirs~\cite{eventfairs2025}. That day fell below the shuttle threshold.
+The selected cases suggest that the relationship between air traffic and shuttle use varies around major events and holidays. Before the Children's Book Fair, both air arrivals and station-bound shuttle trips were above their matched-weekday medians in two successive years~\cite{eventfairs2024,eventfairs2025}. On the eve of Cosmoprof 2025, by contrast, air arrivals were 15.7\% above their median while station-bound shuttle trips were 23.7\% below theirs~\cite{eventfairs2025}. Changes in the mix of travelers or in their choice of ground transport could contribute to these differences. The aggregate counts cannot distinguish between these explanations.
 
-At the end of the May Day holiday weekend, departures by air were near their reference while shuttle trips toward the airport were 15.2\% higher~\cite{eventmayday}. On the Monday after the Emilia-Romagna Grand Prix, both flows were above their references, and SCHED and PAX underpredicted shuttle demand toward the airport by about 930 trips each~\cite{eventimola}. This was the largest daily underprediction for either model among the 13 test cases above the threshold. The comparisons are retrospective, and the aggregate counts cannot identify event attendees or measure occupancy inside the terminal.
+For forecasting, the most revealing cases are the end of the May Day weekend and the day after the Imola Grand Prix~\cite{eventmayday,eventimola}. On both dates, airport-bound shuttle trips increased more than air departures relative to their respective medians. Both models underestimated the daily shuttle total by similar amounts. After the Grand Prix, the shortfall was roughly 930 trips in each model, the largest underprediction among the 13 test cases above the threshold. This pattern motivates testing event and holiday indicators alongside flight inputs, with separate windows for travel to Bologna before an event and travel away afterward.
 
 \subsection{Robustness to forecasting algorithm}
 \label{sec:algorithm_results}
 Scheduled flight counts reduce MAE relative to CAL in all 18 method--direction comparisons. Sixteen seven-day-block nominal intervals exclude zero; ten remain positive under the simultaneous intervals. These are correlated comparisons on one holdout, not 18 independent replications. Passenger estimates improve on SCHED in 12 comparisons, with changes ranging from $-3.48$\% to $2.55$\%; only the station-bound regularized linear model retains a positive simultaneous interval. The small additional gain is therefore model-dependent, whereas the direction of the flight-count benefit is consistent across the tested methods.
 
-No alternative provides a clear improvement in both directions. Extra Trees, selected by joint validation MAE in each direction, gives PAX MAEs of 31.36 toward the station and 23.95 toward the airport, compared with 30.86 and 24.85 for the original model. Its improvements over the original PAX are $-1.61$\% $[-4.63,0.80]$ and $3.61$\% $[-2.95,10.87]$ under nominal seven-day-block intervals. Changing only the original model's loss to absolute error reduces PAX MAE to 29.80 and 24.19, but raises peak MAE from 59.64 to 68.70 and from 49.40 to 52.19. Thus, lower average error need not improve surge prediction. These checks support retaining the main controlled comparison rather than choosing a new model from its test score.
+No alternative provides a clear improvement in both directions. Extra Trees, selected by joint validation MAE in each direction, gives PAX MAEs of 31.36 toward the station and 23.95 toward the airport, compared with 30.86 and 24.85 for the original model. Its improvements over the original PAX are $-1.61$\% $[-4.63,0.80]$ and $3.61$\% $[-2.95,10.87]$ under nominal seven-day-block intervals. Changing only the original model's loss to absolute error reduces PAX MAE to 29.80 and 24.19, but raises peak MAE from 59.64 to 68.70 and from 49.40 to 52.19. Thus, lower average error need not improve surge prediction.
 
-\section{Discussion and operational implications}
+\section{Discussion}
 \subsection{Predictive value and transferability}
-Flight counts provide most of the improvement over calendar boosting, while historical passenger estimates add only about 0.5\% in the main specification. Algorithm checks preserve the direction of the flight-count benefit but not a uniform passenger-estimation gain. The latter's additional data requirements are therefore not clearly justified by the main model's MAE alone. This does not rule out better passenger-estimation methods or benefits under other models. Recent shuttle counts also provide a competitive alternative in some months, and actual flight outcomes do not consistently improve predictions.
+Flight counts provide most of the improvement over calendar boosting, while historical passenger estimates add only about 0.5\% in the main specification. Algorithm checks preserve the direction of the flight-count benefit but not a uniform passenger-estimation gain. The latter's additional data requirements are therefore not clearly justified by the main model's MAE alone. Recent shuttle counts also provide a competitive alternative in some months, and actual flight outcomes do not consistently improve predictions.
 
 The transferable contribution is the controlled comparison CAL $\rightarrow$ SCHED $\rightarrow$ PAX, not Bologna's fitted models or numerical gains. Other airport links can apply the same procedure, with historical shuttle averages as secondary checks. Transfer distances, baggage collection, service frequency, and transport choices may require different flight windows and can change the value of each input.
-
-\subsection{Operational implications}
-Lower hourly error does not directly imply fewer trains, shorter queues, or lower costs. The same hourly total can represent evenly distributed trips or a short passenger burst. Operational decisions therefore require within-hour arrivals, train capacities, dispatch rules, and the costs of insufficient or excess service, none of which are available here.
-
-Upper-quantile forecasts address underestimation more directly than mean forecasts, but their coverage does not guarantee sufficient capacity during every surge. The illustrative 90th percentile is close to its coverage target toward the station and below it toward the airport. Operational use would require a cost-based choice of quantile, separate calibration, and monitoring across service conditions. Conformal methods are one possible extension~\cite{conformal}, subject to checks of their assumptions for temporally dependent data.
 
 \subsection{Limitations and next steps}
 The retrospective test covers three consecutive months of recorded ordinary-service hours, not a complete seasonal cycle or all service conditions. Fixed models may become less representative over time, and the source files do not verify real-time input availability. Aggregate associations cannot identify individual transfers or establish causal effects.
@@ -380,17 +357,11 @@ The retrospective test covers three consecutive months of recorded ordinary-serv
 Prospective validation needs continuous directional counts with explicit replacement and shutdown labels, archived schedules including cancellations and revisions, and timestamps documenting input availability. Testing should then cover consecutive seasons with model choices fixed in advance. A priority is to combine flight features with recent shuttle history, testing whether schedules still add value when forecasts already respond to current use. A prospective comparison could also test whether event calendars available at forecast issuance improve predictions, using separate windows for arrivals before events and departures after them.
 
 \section{Conclusions}
-We studied whether flight information improves hourly trip forecasts for Bologna's Marconi Express in both directions, training once before March 2025 and testing on March--May. The main contribution is a staged comparison: adding scheduled flight counts first, then historical passenger estimates, while keeping the forecasting model unchanged. Flight counts reduce full-period MAE by 8.7\% toward the station and 3.7\% toward the airport relative to calendar boosting. Passenger estimates add about 0.5\% in each direction, and neither full-period interval nor any of the six monthly intervals for this additional gain excludes zero.
+On recorded ordinary-service hours in March--May 2025, adding scheduled flight counts to the calendar model reduced mean absolute error from 33.97 to 31.02 trips per hour toward the station (8.7\%) and from 25.94 to 24.97 toward the airport (3.7\%). All nine forecasting methods showed a reduction in both directions on this holdout. Historical passenger estimates yielded a further gain of about 0.5\% in the main model, with both directional intervals including zero.
 
-The main benchmark is CAL, and the scope of the conclusions is the incremental value of flight inputs relative to that calendar model. PAX has lower MAE than CAL in every month and direction, but the size and uncertainty of the gains vary. Secondary checks favor PAX over historical averages on the full test period, while recent shuttle counts are competitive or better in May. More detailed flight inputs should therefore be justified by their added accuracy, not assumed to be beneficial.
+The benefit toward the station extended to busy hours, where flight counts reduced mean absolute error from 77.47 to 61.94 trips per hour. Individual days still posed a challenge. On May 19, the day after the Imola Grand Prix, the flight-count model underestimated trips toward the airport by 935 over the service day. Adding passenger estimates left a shortfall of 930. An event calendar available before travel would allow a direct test of whether local events help predict such departures.
 
-Exploratory checks across nine mean-oriented methods preserve the direction of the scheduled-flight-count benefit, while the additional passenger-estimation gain varies with the model. They strengthen the robustness assessment within this holdout, not evidence of performance in new seasons.
-
-Further checks show that using actual flight outcomes does not consistently improve the model, and low average error does not ensure that passenger surges are predicted well. Upper-quantile forecasts better address asymmetric errors, but need further calibration. The repository makes these comparisons reproducible. Their scope remains a retrospective evaluation on recorded ordinary-service hours; a live validation requires archived schedules, known record-delivery times, explicit service states, and future-season tests.
-
-Future work will develop and prospectively evaluate a forecasting system for Bologna Airport's rail connection. It will combine timestamped flight schedules, historical passenger information, and continuously updated directional shuttle counts to issue hourly forecasts in both directions. Archiving schedule revisions and cancellations, recording input availability, and distinguishing ordinary service, replacement services, and shutdowns will enable evaluation against the information available at each forecast time.
-
-The system will test the incremental value of flight counts and passenger estimates alongside recent shuttle observations, following the controlled comparisons motivated by RQ1 and RQ2. Calendar-only and recent-history forecasts will remain the references. It will also provide calibrated upper-quantile forecasts and monitor errors and coverage across consecutive seasons, forecast horizons, and service states. Linking forecasts to capacity or staffing decisions will require train-level and operational data and an explicit assessment of under- and over-provision costs.
+In May, recent shuttle averages had lower mean absolute error than either flight-based model in both directions. A prospective comparison using archived schedules and timestamped shuttle counts could establish how much flights add once forecasts already reflect recent shuttle use.
 
 \section*{Data and code availability}
 The dataset and materials supporting reproducibility, including the analysis code, hourly predictions, and detailed diagnostic tables, are available at \url{https://github.com/nbicocchi/paper-airport-express-code}.
